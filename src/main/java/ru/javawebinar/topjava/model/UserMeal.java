@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.model;
 import java.time.LocalDateTime;
 
 public class UserMeal {
-
     private final LocalDateTime dateTime;
 
     private final String description;
