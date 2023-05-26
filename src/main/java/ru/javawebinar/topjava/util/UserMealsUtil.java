@@ -30,19 +30,21 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         Map<LocalDate, Integer> dailyCalories = new HashMap<>();
-
-        for (UserMeal meal : meals) {
-            dailyCalories.merge(meal.getDateTime().toLocalDate(), meal.getCalories(), Integer::sum);
-        }
-
+        Map<LocalDate, boolean[]> dailyCaloriesExcess = new HashMap<>();
         List<UserMealWithExcess> mealsTo = new ArrayList<>();
         for (UserMeal meal : meals) {
+            dailyCalories.merge(meal.getDateTime().toLocalDate(), meal.getCalories(), Integer::sum);
+            dailyCaloriesExcess.putIfAbsent(meal.getDateTime().toLocalDate(), new boolean[]{false});
+            boolean[] excess = dailyCaloriesExcess.get(meal.getDateTime().toLocalDate());
+            if (dailyCalories.get(meal.getDateTime().toLocalDate()) > caloriesPerDay && !excess[0]) {
+                excess[0] = true;
+            }
             if (TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime)) {
                 mealsTo.add(new UserMealWithExcess(
                         meal.getDateTime(),
                         meal.getDescription(),
                         meal.getCalories(),
-                        dailyCalories.get(meal.getDateTime().toLocalDate()) > caloriesPerDay));
+                        dailyCaloriesExcess.get(meal.getDateTime().toLocalDate())));
             }
         }
         return mealsTo;
@@ -51,7 +53,6 @@ public class UserMealsUtil {
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         Map<LocalDate, Integer> dailyCalories = meals.stream()
                 .collect(Collectors.groupingBy(m -> m.getDateTime().toLocalDate(), Collectors.summingInt(UserMeal::getCalories)));
-        List<UserMealWithExcess> mealsTo = new ArrayList<>();
 
         return meals.stream()
                 .filter(m -> TimeUtil.isBetweenHalfOpen(m.getDateTime().toLocalTime(), startTime, endTime))
@@ -59,7 +60,7 @@ public class UserMealsUtil {
                         m.getDateTime(),
                         m.getDescription(),
                         m.getCalories(),
-                        dailyCalories.get(m.getDateTime().toLocalDate()) > caloriesPerDay))
+                         new boolean[]{dailyCalories.get(m.getDateTime().toLocalDate()) > caloriesPerDay}))
                 .collect(Collectors.toList());
     }
 }
