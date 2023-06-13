@@ -3,8 +3,6 @@ package ru.javawebinar.topjava.model;
 import java.time.LocalDateTime;
 
 public class MealTo {
-    public static final int CALORIES_PER_DAY = 2000;
-
     private final LocalDateTime dateTime;
 
     private final String description;

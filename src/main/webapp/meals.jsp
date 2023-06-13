@@ -23,13 +23,13 @@
             <jsp:useBean id="mealTo" type="ru.javawebinar.topjava.model.MealTo"/>
             <tr style="color: ${mealTo.excess ?  'red' : 'green'}">
                 <td>
-                    <%=TimeUtil.format(mealTo.getDateTime())%>
+                        ${TimeUtil.format(mealTo.dateTime)}
                 </td>
                 <td>
-                    <%=mealTo.getDescription()%>
+                        ${mealTo.description}
                 </td>
                 <td>
-                    <%=mealTo.getCalories()%>
+                        ${mealTo.calories}
                 </td>
                 <td>
                     <a href="">Update</a>
