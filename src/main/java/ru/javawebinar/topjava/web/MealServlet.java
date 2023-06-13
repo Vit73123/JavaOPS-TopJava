@@ -12,8 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
-import static ru.javawebinar.topjava.TestData.testMeals;
-import static ru.javawebinar.topjava.util.MealsUtil.getAllMealsTo;
+import static ru.javawebinar.topjava.util.MealsUtil.*;
 
 public class MealServlet extends HttpServlet {
     private List<Meal> meals;
@@ -22,14 +21,14 @@ public class MealServlet extends HttpServlet {
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        meals = testMeals;
+        meals = TEST_MEALS_LIST;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("redirect to meals");
 
-        request.setAttribute("mealsTo", getAllMealsTo(meals));
+        request.setAttribute("mealsTo", getMealsTo(meals, TEST_CALORIES_PER_DAY));
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
     }
 }

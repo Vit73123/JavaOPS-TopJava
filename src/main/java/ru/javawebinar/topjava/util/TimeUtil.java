@@ -12,7 +12,6 @@ public class TimeUtil {
     }
 
     public static String format(LocalDateTime date) {
-        if (date == null) return "";
-        return date.format(DATE_FORMATTER);
+        return ((date == null) ? "" : date.format(DATE_FORMATTER));
     }
 }
