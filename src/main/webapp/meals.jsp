@@ -9,34 +9,24 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<p><a href="">Add Meal</a></p>
+<p><a href="meals?action=add">Add Meal</a></p>
 <div>
     <table border="1" bordercolor="black" cellpadding="8" cellspacing="0">
-        <tr >
+        <tr>
             <th>Date</th>
             <th>Description</th>
             <th>Calories</th>
             <th></th>
             <th></th>
         </tr>
-        <c:forEach items="${mealsTo}" var="mealTo">
-            <jsp:useBean id="mealTo" type="ru.javawebinar.topjava.model.MealTo"/>
-            <tr style="color: ${mealTo.excess ?  'red' : 'green'}">
-                <td>
-                        ${TimeUtil.format(mealTo.dateTime)}
-                </td>
-                <td>
-                        ${mealTo.description}
-                </td>
-                <td>
-                        ${mealTo.calories}
-                </td>
-                <td>
-                    <a href="">Update</a>
-                </td>
-                <td>
-                    <a href="">Delete</a>
-                </td>
+        <c:forEach items="${meals}" var="meal">
+            <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
+            <tr style="color: ${meal.excess ?  'red' : 'green'}">
+                <td><a href="meals?action=view&id=${meal.id}">${TimeUtil.format(meal.dateTime)}</a></td>
+                <td>${meal.description}</td>
+                <td>${meal.calories}</td>
+                <td><a href="meals?action=edit&id=${meal.id}">Update</a></td>
+                <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
             </tr>
         </c:forEach>
     </table>
