@@ -2,7 +2,8 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.storage.Storage;
+import ru.javawebinar.topjava.storage.MealsLocalStorage;
+import ru.javawebinar.topjava.storage.MealsStorage;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletConfig;
@@ -19,31 +20,33 @@ import static ru.javawebinar.topjava.util.MealsUtil.*;
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
 
-    private Storage storage;
+    private MealsStorage mealsStorage = new MealsLocalStorage();
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        storage = TEST_MEALS_MAP_STORAGE;
+        for(Meal meal : testMealsList) {
+            mealsStorage.create(meal);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("MealServlet Post");
-
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
 
         final boolean isCreate = (id == null || id.isEmpty());
 
         Meal meal = new Meal(
-                isCreate ? 0 : Integer.parseInt(id),
+                isCreate ? null : Integer.parseInt(id),
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
         if (isCreate) {
-            storage.create(meal);
+            mealsStorage.create(meal);
+            log.debug("Post: Create Meal (id: {})", + meal.getId());
         } else {
-            storage.update(meal);
+            mealsStorage.update(meal);
+            log.debug("Post: Update Meal (id: {})", + meal.getId());
         }
 
         response.sendRedirect("meals");
@@ -51,13 +54,12 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("MealServlet Get");
-
         String id = request.getParameter("id");
         String action = request.getParameter("action");
 
         if (action == null) {
-            request.setAttribute("meals", getAllMealsTo(storage.getAll(), TEST_CALORIES_PER_DAY));
+            log.debug("Get: View meals");
+            request.setAttribute("meals", getAllMealsTo(mealsStorage.getAll(), TEST_CALORIES_PER_DAY));
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
             return;
         }
@@ -66,14 +68,18 @@ public class MealServlet extends HttpServlet {
         switch (action) {
             case "view":
             case "edit":
-                meal = storage.get(Integer.parseInt(id));
+                meal = mealsStorage.get(Integer.parseInt(id));
+                log.debug("Get: {} Meal(id: {})", action.equals("view") ? "View" : "Edit", id);
                 break;
             case "add":
+                log.debug("Get: Create Meal");
                 meal = MealsUtil.EMPTY;
                 break;
             case "delete":
-                storage.delete(Integer.parseInt(id));
+                log.debug("Get: Delete Meal(id: {})", id);
+                mealsStorage.delete(Integer.parseInt(id));
             default:
+                log.debug("Get: Illegal action");
                 response.sendRedirect("meals");
                 return;
         }
