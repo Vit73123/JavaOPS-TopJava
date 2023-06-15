@@ -8,28 +8,31 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MapStorage implements Storage {
+public class MealsMapStorage implements Storage {
+    private AtomicInteger newId = new AtomicInteger();
+
     private Map<Integer, Meal> map = new ConcurrentHashMap<>();
-    private AtomicInteger size = new AtomicInteger();
 
     @Override
-    public Meal get(Integer id) {
+    public Meal get(int id) {
         return map.get(id);
     }
 
     @Override
-    public void save(Meal m) {
-        m.setId(size.incrementAndGet());
-        map.put(m.getId(), m);
+    public Meal create(Meal meal) {
+        if (meal.getId() == null) meal.setId(newId.getAndIncrement());
+        map.put(meal.getId(), meal);
+        return meal;
     }
 
     @Override
-    public void update(Meal m) {
-        map.put(m.getId(), m);
+    public Meal update(Meal meal) {
+        map.put(meal.getId(), meal);
+        return meal;
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(int id) {
         map.remove(id);
     }
 

@@ -1,9 +1,9 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.Main;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.storage.Storage;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.slf4j.LoggerFactory.getLogger;
-import static ru.javawebinar.topjava.Main.TEST_CALORIES_PER_DAY;
-import static ru.javawebinar.topjava.Main.testMapStorage;
-import static ru.javawebinar.topjava.util.MealsUtil.getAllMealsTo;
+import static ru.javawebinar.topjava.util.MealsUtil.*;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
@@ -25,44 +23,37 @@ public class MealServlet extends HttpServlet {
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        storage = testMapStorage;
+        storage = TEST_MEALS_MAP_STORAGE;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("MealServlet Post");
+
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
-        final boolean isCreate = (id == null || id.length() == 0);
 
-        Meal meal;
-        if (isCreate) {
-            meal = new Meal(
-                    LocalDateTime.parse(request.getParameter("dateTime")),
-                    request.getParameter("description"),
-                    Integer.parseInt(request.getParameter("calories")),
-                    Main.testMapStorageMaxId.getAndIncrement()
-            );
-        } else {
-            meal = storage.get(Integer.valueOf(id));
-            meal.setDateTime(LocalDateTime.parse(request.getParameter("dateTime")));
-            meal.setDescription(request.getParameter("description"));
-            meal.setCalories(Integer.parseInt(request.getParameter("calories")));
-        }
+        final boolean isCreate = (id == null || id.isEmpty());
 
+        Meal meal = new Meal(
+                isCreate ? 0 : Integer.parseInt(id),
+                LocalDateTime.parse(request.getParameter("dateTime")),
+                request.getParameter("description"),
+                Integer.parseInt(request.getParameter("calories")));
         if (isCreate) {
-            storage.save(meal);
+            storage.create(meal);
         } else {
             storage.update(meal);
         }
+
         response.sendRedirect("meals");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("redirect to meals");
+        log.debug("MealServlet Get");
 
         String id = request.getParameter("id");
-        Integer id_num = (id == null ? 0 : Integer.valueOf(id));
         String action = request.getParameter("action");
 
         if (action == null) {
@@ -74,25 +65,17 @@ public class MealServlet extends HttpServlet {
         Meal meal;
         switch (action) {
             case "view":
-                meal = storage.get(id_num);
+            case "edit":
+                meal = storage.get(Integer.parseInt(id));
                 break;
             case "add":
-                meal = Meal.EMPTY;
-                break;
-            case "edit":
-                meal = new Meal(
-                        storage.get(id_num).getDateTime(),
-                        storage.get(id_num).getDescription(),
-                        storage.get(id_num).getCalories(),
-                        storage.get(id_num).getId()
-                );
+                meal = MealsUtil.EMPTY;
                 break;
             case "delete":
-                storage.delete(id_num);
+                storage.delete(Integer.parseInt(id));
+            default:
                 response.sendRedirect("meals");
                 return;
-            default:
-                throw new IllegalArgumentException("Action " + action + " is illegal");
         }
 
         request.setAttribute("meal", meal);
