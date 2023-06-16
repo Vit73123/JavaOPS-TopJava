@@ -5,6 +5,7 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.storage.MealsLocalStorage;
 import ru.javawebinar.topjava.storage.MealsStorage;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.TimeUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,10 +21,11 @@ import static ru.javawebinar.topjava.util.MealsUtil.*;
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
 
-    private MealsStorage mealsStorage = new MealsLocalStorage();
+    private MealsStorage mealsStorage;
 
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        mealsStorage = new MealsLocalStorage();
         for(Meal meal : testMealsList) {
             mealsStorage.create(meal);
         }
@@ -42,11 +44,11 @@ public class MealServlet extends HttpServlet {
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
         if (isCreate) {
+            log.debug("Post: Create Meal");
             mealsStorage.create(meal);
-            log.debug("Post: Create Meal (id: {})", + meal.getId());
         } else {
+            log.debug("Post: Update Meal");
             mealsStorage.update(meal);
-            log.debug("Post: Update Meal (id: {})", + meal.getId());
         }
 
         response.sendRedirect("meals");
@@ -68,18 +70,17 @@ public class MealServlet extends HttpServlet {
         switch (action) {
             case "view":
             case "edit":
+                log.debug("Get: {} Meal", action.equals("view") ? "View" : "Edit");
                 meal = mealsStorage.get(Integer.parseInt(id));
-                log.debug("Get: {} Meal(id: {})", action.equals("view") ? "View" : "Edit", id);
                 break;
             case "add":
                 log.debug("Get: Create Meal");
-                meal = MealsUtil.EMPTY;
+                meal = MealsUtil.empty;
                 break;
             case "delete":
-                log.debug("Get: Delete Meal(id: {})", id);
                 mealsStorage.delete(Integer.parseInt(id));
             default:
-                log.debug("Get: Illegal action");
+                log.debug("Get: {}", action.equals("delete") ? "Delete Meal" : "Illegal action");
                 response.sendRedirect("meals");
                 return;
         }

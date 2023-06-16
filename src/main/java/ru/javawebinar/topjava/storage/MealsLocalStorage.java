@@ -21,7 +21,8 @@ public class MealsLocalStorage implements MealsStorage {
     @Override
     public Meal create(Meal meal) {
         meal.setId(newId.getAndIncrement());
-        return map.put(meal.getId(), meal);
+        map.put(meal.getId(), meal);
+        return meal;
     }
 
     @Override
