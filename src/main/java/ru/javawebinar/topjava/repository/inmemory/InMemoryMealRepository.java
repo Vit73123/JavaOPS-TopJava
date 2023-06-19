@@ -36,7 +36,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal) {
-        if (!isExist(meal, meal.getUserId())) {
+        if (!isAcceptable(meal, meal.getUserId())) {
             return null;
         }
         if (meal.isNew()) {
@@ -56,7 +56,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
-        return (isExist(repository.get(id), userId) && repository.remove(id) != null);
+        return (isAcceptable(repository.get(id), userId) && repository.remove(id) != null);
     }
 
 /*
@@ -69,7 +69,7 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public Meal get(int id, int userId) {
         Meal meal = repository.get(id);
-        return isExist(meal, userId) ? meal : null;
+        return isAcceptable(meal, userId) ? meal : null;
     }
 
 /*
@@ -87,7 +87,7 @@ public class InMemoryMealRepository implements MealRepository {
                 .collect(Collectors.toList());
     }
 
-    private boolean isExist(Meal meal, int userId) {
+    private boolean isAcceptable(Meal meal, int userId) {
         return meal != null && meal.getUserId() == userId;
     }
 }
