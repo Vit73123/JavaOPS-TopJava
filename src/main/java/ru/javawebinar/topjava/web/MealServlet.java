@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+import static ru.javawebinar.topjava.web.SecurityUtil.authUserCaloriesPerDay;
+import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
+
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
@@ -30,10 +33,9 @@ public class MealServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
-        int userId = SecurityUtil.authUserId();
 
         Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
-                SecurityUtil.authUserId(),
+                authUserId(),
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
@@ -46,7 +48,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        int userId = SecurityUtil.authUserId();
+        int userId = authUserId();
 
         switch (action == null ? "all" : action) {
             case "delete":
@@ -67,7 +69,7 @@ public class MealServlet extends HttpServlet {
             default:
                 log.info("getAll");
                 request.setAttribute("meals",
-                        MealsUtil.getTos(repository.getAll(userId), SecurityUtil.authUserCaloriesPerDay()));
+                        MealsUtil.getTos(repository.getAll(userId), authUserCaloriesPerDay()));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }
