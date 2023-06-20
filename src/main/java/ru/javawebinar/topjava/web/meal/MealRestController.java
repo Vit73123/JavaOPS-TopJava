@@ -17,7 +17,7 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.*;
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserCaloriesPerDay;
-import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
+import static ru.javawebinar.topjava.web.SecurityUtil.getAuthUserId;
 
 @Controller
 public class MealRestController {
@@ -28,7 +28,7 @@ public class MealRestController {
 
     public List<MealTo> getAll() {
         log.info("getAll");
-        return MealsUtil.getTos(service.getAll(authUserId()), authUserCaloriesPerDay());
+        return MealsUtil.getTos(service.getAll(getAuthUserId()), authUserCaloriesPerDay());
     }
 
     public List<MealTo> getFilteredByDateTime(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
@@ -38,12 +38,12 @@ public class MealRestController {
         if (startTime == null) startTime = MIN_TIME;
         if (endTime == null) endTime = MAX_TIME;
         return MealsUtil.getFilteredTos(service.getFilteredByDate(
-                startDate, endDate, authUserId()), authUserCaloriesPerDay(), startTime, endTime);
+                startDate, endDate, getAuthUserId()), authUserCaloriesPerDay(), startTime, endTime);
     }
 
     public Meal get(int id) {
         log.info("get {}", id);
-        return service.get(id, authUserId());
+        return service.get(id, getAuthUserId());
     }
 
     public Meal create(Meal meal) {
@@ -54,7 +54,7 @@ public class MealRestController {
 
     public void delete(int id) {
         log.info("delete {}", id);
-        service.delete(id, authUserId());
+        service.delete(id, getAuthUserId());
     }
 
     public void update(Meal meal, int id) {

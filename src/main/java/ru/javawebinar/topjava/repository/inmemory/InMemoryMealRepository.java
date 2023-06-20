@@ -15,6 +15,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static ru.javawebinar.topjava.util.DateTimeUtil.MAX_DATE;
+import static ru.javawebinar.topjava.util.DateTimeUtil.MIN_DATE;
+
 @Repository
 public class InMemoryMealRepository implements MealRepository {
     private final Map<Integer, Meal> repository = new ConcurrentHashMap<>();
@@ -23,19 +26,6 @@ public class InMemoryMealRepository implements MealRepository {
     {
         MealsUtil.meals.forEach(this::save);
     }
-
-/*
-    @Override
-    public Meal save(Meal meal) {
-        if (meal.isNew()) {
-            meal.setId(counter.incrementAndGet());
-            repository.put(meal.getId(), meal);
-            return meal;
-        }
-        // handle case: update, but not present in storage
-        return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
-    }
-*/
 
     @Override
     public Meal save(Meal meal) {
@@ -50,24 +40,10 @@ public class InMemoryMealRepository implements MealRepository {
         return meal;
     }
 
-/*
-    @Override
-    public boolean delete(int id) {
-        return repository.remove(id) != null;
-    }
-*/
-
     @Override
     public boolean delete(int id, int userId) {
         return (isAcceptable(repository.get(id), userId) && repository.remove(id) != null);
     }
-
-/*
-    @Override
-    public Meal get(int id) {
-        return repository.get(id);
-    }
-*/
 
     @Override
     public Meal get(int id, int userId) {
@@ -75,20 +51,15 @@ public class InMemoryMealRepository implements MealRepository {
         return isAcceptable(meal, userId) ? meal : null;
     }
 
-/*
-    @Override
-    public Collection<Meal> getAll() {
-        return repository.values();
-    }
-*/
-
     @Override
     public Collection<Meal> getAll(int userId) {
-        return filterByPredicate(meal -> true);
+        return getFilteredByDate(MIN_DATE, MAX_DATE, userId);
     }
 
     public Collection<Meal> getFilteredByDate(LocalDate startDate, LocalDate endDate, int userId) {
-        return filterByPredicate(meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDate(), startDate, endDate.plusDays(1)));
+        return filterByPredicate(meal -> (
+                DateTimeUtil.isBetweenHalfOpen(meal.getDate(), startDate, endDate.plusDays(1)) &&
+                        meal.getUserId() == userId));
     }
 
     private Collection<Meal> filterByPredicate(Predicate<Meal> filter) {

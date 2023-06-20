@@ -18,7 +18,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
+import static ru.javawebinar.topjava.web.SecurityUtil.getAuthUserId;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
@@ -46,7 +46,7 @@ public class MealServlet extends HttpServlet {
 
         Meal meal = new Meal(
                 idNum,
-                authUserId(),
+                getAuthUserId(),
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
@@ -63,7 +63,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        int userId = authUserId();
+        int userId = getAuthUserId();
 
         switch (action == null ? "all" : action) {
             case "delete":
@@ -88,9 +88,9 @@ public class MealServlet extends HttpServlet {
                 String endTime = request.getParameter("endTime");
                 request.setAttribute("meals", mealRestController.getFilteredByDateTime(
                         startDate.isEmpty() ? null : LocalDate.parse(startDate),
-                        startDate.isEmpty() ? null : LocalDate.parse(endDate),
-                        startDate.isEmpty() ? null : LocalTime.parse(startTime),
-                        startDate.isEmpty() ? null : LocalTime.parse(endTime)));
+                        endDate.isEmpty() ? null : LocalDate.parse(endDate),
+                        startTime.isEmpty() ? null : LocalTime.parse(startTime),
+                        endTime.isEmpty() ? null : LocalTime.parse(endTime)));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":
