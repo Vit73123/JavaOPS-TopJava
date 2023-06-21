@@ -6,10 +6,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -57,11 +54,11 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public Collection<Meal> getAll(int userId) {
+    public List<Meal> getAll(int userId) {
         return getFilteredByDate(MIN_DATE, MAX_DATE, userId);
     }
 
-    public Collection<Meal> getFilteredByDate(LocalDate startDate, LocalDate endDate, int userId) {
+    public List<Meal> getFilteredByDate(LocalDate startDate, LocalDate endDate, int userId) {
         if (!repository.containsKey(userId)) return null;
         Map<Integer, Meal> meals = repository.get(userId);
         if (meals == null) return Collections.emptyList();
