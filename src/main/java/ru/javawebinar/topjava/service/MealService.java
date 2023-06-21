@@ -40,7 +40,7 @@ public class MealService {
         return new ArrayList<>(checkNotFound(repository.getFilteredByDate(startDate, endDate, userId), "UserId=" + userId));
     }
 
-    public void update(Meal meal, int userId) {
-        checkNotFoundWithId(repository.save(meal, userId), userId);
+    public void update(Meal meal, int id, int userId) {
+        checkNotFoundWithId(repository.save(meal, userId), id);
     }
 }
