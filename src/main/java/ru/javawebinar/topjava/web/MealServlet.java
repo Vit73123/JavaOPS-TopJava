@@ -43,10 +43,11 @@ public class MealServlet extends HttpServlet {
         String id = request.getParameter("id");
         Integer idNum = id.isEmpty() ? null : Integer.parseInt(id);
 
-        int userId = authUserId();
         Meal meal = new Meal(
-                idNum, LocalDateTime.parse(request.getParameter("dateTime")), userId + ": " + request.getParameter("description"), Integer.parseInt(request.getParameter("calories"))
-        );
+                idNum,
+                LocalDateTime.parse(request.getParameter("dateTime")),
+                request.getParameter("description"),
+                Integer.parseInt(request.getParameter("calories")));
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         if (meal.isNew()) {
@@ -60,7 +61,6 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        int userId = authUserId();
 
         switch (action == null ? "all" : action) {
             case "delete":
