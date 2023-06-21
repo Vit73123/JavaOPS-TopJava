@@ -18,7 +18,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-import static ru.javawebinar.topjava.web.SecurityUtil.getAuthUserId;
+import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
@@ -43,7 +43,7 @@ public class MealServlet extends HttpServlet {
         String id = request.getParameter("id");
         Integer idNum = id.isEmpty() ? null : Integer.parseInt(id);
 
-        int userId = getAuthUserId();
+        int userId = authUserId();
         Meal meal = new Meal(
                 idNum, LocalDateTime.parse(request.getParameter("dateTime")), userId + ": " + request.getParameter("description"), Integer.parseInt(request.getParameter("calories"))
         );
@@ -60,7 +60,7 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        int userId = getAuthUserId();
+        int userId = authUserId();
 
         switch (action == null ? "all" : action) {
             case "delete":

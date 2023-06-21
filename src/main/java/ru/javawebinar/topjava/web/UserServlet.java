@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.slf4j.LoggerFactory.getLogger;
-import static ru.javawebinar.topjava.web.SecurityUtil.getAuthUserId;
+import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 
 public class UserServlet extends HttpServlet {
     private static final Logger log = getLogger(UserServlet.class);
@@ -24,7 +24,7 @@ public class UserServlet extends HttpServlet {
         }
 
         SecurityUtil.setAuthUserId(Integer.parseInt(user));
-        log.debug("Set User: {}", getAuthUserId());
+        log.debug("Set User: {}", authUserId());
         response.sendRedirect("meals");
     }
 }
