@@ -5,12 +5,13 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
-public @Service
-class MealService {
+@Service
+public class MealService {
 
     private final MealRepository repository;
 
@@ -35,7 +36,7 @@ class MealService {
     }
 
     public List<Meal> getFilteredByDate (LocalDate startDate, LocalDate endDate, int userId) {
-        return (List<Meal>) repository.getFilteredByDate(startDate, endDate, userId);
+        return new ArrayList<>(repository.getFilteredByDate(startDate, endDate, userId));
     }
 
     public void update(Meal meal, int userId) {
