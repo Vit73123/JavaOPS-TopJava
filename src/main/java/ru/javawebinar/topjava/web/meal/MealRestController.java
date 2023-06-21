@@ -49,7 +49,7 @@ public class MealRestController {
     public Meal create(Meal meal) {
         log.info("create {}", meal);
         checkNew(meal);
-        return service.create(meal);
+        return service.create(meal, getAuthUserId());
     }
 
     public void delete(int id) {
@@ -60,6 +60,6 @@ public class MealRestController {
     public void update(Meal meal, int id) {
         log.info("update {} with id={}", meal, id);
         assureIdConsistent(meal, id);
-        service.update(meal);
+        service.update(meal, getAuthUserId());
     }
 }

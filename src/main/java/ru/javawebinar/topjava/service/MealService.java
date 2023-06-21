@@ -18,8 +18,8 @@ class MealService {
         this.repository = repository;
     }
 
-    public Meal create(Meal meal) {
-        return repository.save(meal);
+    public Meal create(Meal meal, int userId) {
+        return repository.save(meal, userId);
     }
 
     public void delete(int id, int userId) {
@@ -38,7 +38,7 @@ class MealService {
         return (List<Meal>) repository.getFilteredByDate(startDate, endDate, userId);
     }
 
-    public void update(Meal meal) {
-        checkNotFoundWithId(repository.save(meal), meal.getId());
+    public void update(Meal meal, int userId) {
+        checkNotFoundWithId(repository.save(meal, userId), userId);
     }
 }

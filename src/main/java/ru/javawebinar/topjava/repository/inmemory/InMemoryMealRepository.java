@@ -19,34 +19,42 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.MIN_DATE;
 
 @Repository
 public class InMemoryMealRepository implements MealRepository {
-    private final Map<Integer, Meal> repository = new ConcurrentHashMap<>();
+    private final Map<Integer, Map<Integer, Meal>> repository = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(this::save);
+        repository.put(1, new ConcurrentHashMap<>());
+        repository.put(2, new ConcurrentHashMap<>());
+        this.save(MealsUtil.meals.get(0), 1);
+        this.save(MealsUtil.meals.get(1), 2);
+        this.save(MealsUtil.meals.get(2), 1);
+        this.save(MealsUtil.meals.get(3), 2);
+        this.save(MealsUtil.meals.get(4), 1);
+        this.save(MealsUtil.meals.get(5), 2);
+        this.save(MealsUtil.meals.get(6), 1);
     }
 
     @Override
-    public Meal save(Meal meal) {
+    public Meal save(Meal meal, int userId) {
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
-        } else if (!isAcceptable(meal, repository.get(meal.getId()).getUserId())) {
-            return null;
         }
         // handle case: update, but not present in storage
-        repository.put(meal.getId(), meal);
-        return meal;
+        Map<Integer, Meal> meals = repository.get(userId);
+        if (meals == null) return null;
+        return meals.put(meal.getId(), meal) != null ? meal : null;
     }
 
     @Override
     public boolean delete(int id, int userId) {
-        return (isAcceptable(repository.get(id), userId) && repository.remove(id) != null);
+        Map<Integer, Meal> meals = repository.get(userId);
+        return meals != null && meals.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        Meal meal = repository.get(id);
-        return isAcceptable(meal, userId) ? meal : null;
+        Map<Integer, Meal> meals = repository.get(userId);
+        return meals == null ? null : meals.get(id);
     }
 
     @Override
@@ -55,15 +63,10 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     public Collection<Meal> getFilteredByDate(LocalDate startDate, LocalDate endDate, int userId) {
-        return repository.values().stream()
+        return repository.get(userId).values().stream()
                 .filter(meal -> (
-                        DateTimeUtil.isBetweenHalfOpen(meal.getDate(), startDate, endDate.plusDays(1)) &&
-                                meal.getUserId() == userId))
+                        DateTimeUtil.isBetweenHalfOpen(meal.getDate(), startDate, endDate.plusDays(1))))
                 .sorted(Comparator.comparing(Meal::getDate).reversed())
                 .collect(Collectors.toList());
-    }
-
-    private boolean isAcceptable(Meal meal, int userId) {
-        return meal != null && meal.getUserId() == userId;
     }
 }
