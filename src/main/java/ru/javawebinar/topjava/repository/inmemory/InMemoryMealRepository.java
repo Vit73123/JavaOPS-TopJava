@@ -12,7 +12,6 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.util.DateTimeUtil.MAX_DATE;
@@ -56,14 +55,10 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     public Collection<Meal> getFilteredByDate(LocalDate startDate, LocalDate endDate, int userId) {
-        return filterByPredicate(meal -> (
-                DateTimeUtil.isBetweenHalfOpen(meal.getDate(), startDate, endDate.plusDays(1)) &&
-                        meal.getUserId() == userId));
-    }
-
-    private Collection<Meal> filterByPredicate(Predicate<Meal> filter) {
         return repository.values().stream()
-                .filter(filter)
+                .filter(meal -> (
+                        DateTimeUtil.isBetweenHalfOpen(meal.getDate(), startDate, endDate.plusDays(1)) &&
+                                meal.getUserId() == userId))
                 .sorted(Comparator.comparing(Meal::getDate).reversed())
                 .collect(Collectors.toList());
     }
