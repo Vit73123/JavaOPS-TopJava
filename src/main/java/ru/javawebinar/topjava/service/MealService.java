@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -32,11 +33,11 @@ public class MealService {
     }
 
     public List<Meal> getAll(int userId) {
-        return (List<Meal>) repository.getAll(userId);
+        return new ArrayList<>(checkNotFound(repository.getAll(userId), "UserId=" + userId));
     }
 
     public List<Meal> getFilteredByDate (LocalDate startDate, LocalDate endDate, int userId) {
-        return new ArrayList<>(repository.getFilteredByDate(startDate, endDate, userId));
+        return new ArrayList<>(checkNotFound(repository.getFilteredByDate(startDate, endDate, userId), "UserId=" + userId));
     }
 
     public void update(Meal meal, int userId) {
