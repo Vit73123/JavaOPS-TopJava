@@ -1,8 +1,6 @@
 package ru.javawebinar.topjava.model;
 
 import org.springframework.util.CollectionUtils;
-import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.util.*;
 
