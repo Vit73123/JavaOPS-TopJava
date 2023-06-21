@@ -44,11 +44,12 @@ public class MealServlet extends HttpServlet {
         String id = request.getParameter("id");
         Integer idNum = id.isEmpty() ? null : Integer.parseInt(id);
 
+        int userId = getAuthUserId();
         Meal meal = new Meal(
                 idNum,
-                getAuthUserId(),
+                userId,
                 LocalDateTime.parse(request.getParameter("dateTime")),
-                request.getParameter("description"),
+                userId + ": " + request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);

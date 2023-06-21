@@ -29,11 +29,10 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal) {
-        if (!isAcceptable(meal, meal.getUserId())) {
-            return null;
-        }
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
+        } else if (!isAcceptable(meal, repository.get(meal.getId()).getUserId())) {
+            return null;
         }
         // handle case: update, but not present in storage
         repository.put(meal.getId(), meal);
