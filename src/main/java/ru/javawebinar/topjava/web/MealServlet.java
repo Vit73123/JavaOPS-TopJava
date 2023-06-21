@@ -46,11 +46,8 @@ public class MealServlet extends HttpServlet {
 
         int userId = getAuthUserId();
         Meal meal = new Meal(
-                idNum,
-                userId,
-                LocalDateTime.parse(request.getParameter("dateTime")),
-                userId + ": " + request.getParameter("description"),
-                Integer.parseInt(request.getParameter("calories")));
+                userId, LocalDateTime.parse(request.getParameter("dateTime")), userId + ": " + request.getParameter("description"), Integer.parseInt(request.getParameter("calories")), idNum
+        );
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         if (meal.isNew()) {
@@ -76,7 +73,7 @@ public class MealServlet extends HttpServlet {
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
-                        new Meal(userId, LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
+                        new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000, userId) :
                         mealRestController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
