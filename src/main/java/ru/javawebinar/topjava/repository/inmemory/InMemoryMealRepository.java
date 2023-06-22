@@ -57,7 +57,6 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     public List<Meal> getFilteredByDate(LocalDate startDate, LocalDate endDate, int userId) {
-        if (!repository.containsKey(userId)) return null;
         Map<Integer, Meal> meals = repository.get(userId);
         if (meals == null) return Collections.emptyList();
         return meals.values().stream()
