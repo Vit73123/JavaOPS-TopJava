@@ -31,12 +31,19 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public Meal save(Meal meal, int userId) {
         if (meal.isNew()) {
-            meal.setId(counter.incrementAndGet());
-            repository.get(userId).put(meal.getId(), meal);
+            repository.compute(userId, (k, v) -> {
+                if (v == null) v = new ConcurrentHashMap<>();
+                meal.setId(counter.incrementAndGet());
+                v.put(meal.getId(), meal);
+                return v;
+            });
             return meal;
         }
         // handle case: update, but not present in storage
-        return repository.get(userId).computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        return repository.computeIfPresent(userId, (k, v) -> {
+            v.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+            return v;
+        }) != null ? meal : null;
     }
 
     @Override
