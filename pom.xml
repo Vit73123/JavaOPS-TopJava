@@ -137,6 +137,14 @@
             <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!--unknown enum constant javax.annotation.meta.When.MAYBE-->
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
