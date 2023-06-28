@@ -20,19 +20,18 @@ public class MealTestData {
     public static final LocalDate END_DATE = LocalDate.of(2020, 1, 30);
     public static final LocalDateTime NOW = LocalDateTime.now();
 
-
     public static final Meal meal_1 = new Meal(ID_1, LocalDateTime.of(2020, 1, 30, 10, 0), "Завтрак", 500);
     public static final Meal meal_2 = new Meal(ID_2, LocalDateTime.of(2020, 1, 30, 13, 0), "Обед", 1000);
     public static final Meal meal_3 = new Meal(ID_3, LocalDateTime.of(2020, 1, 30, 20, 0), "Ужин", 500);
     public static final Meal meal_4 = new Meal(ID_4, LocalDateTime.of(2020, 1, 31, 0, 0), "Еда на граничное значение", 100);
 
     public static Meal getNew() {
-        return new Meal(null, NOW, "newFood", 1555);
+        return new Meal(null, LocalDateTime.of(2022, 1, 30, 10, 0), "newFood", 1555);
     }
 
     public static Meal getUpdated() {
         Meal updated = new Meal(meal_1);
-        updated.setDateTime(NOW);
+        updated.setDateTime(LocalDateTime.of(2022, 1, 31, 12, 0));
         updated.setDescription("UpdatedDescription");
         updated.setCalories(555);
         return updated;
