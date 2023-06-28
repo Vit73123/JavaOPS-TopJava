@@ -18,7 +18,6 @@ public class MealTestData {
 
     public static final LocalDate START_DATE = LocalDate.of(2020, 1, 30);
     public static final LocalDate END_DATE = LocalDate.of(2020, 1, 30);
-    public static final LocalDateTime DUPLICATE_DATE_TIME = LocalDateTime.of(2020, 1, 30, 10, 0);
 
     public static final Meal meal_1 = new Meal(ID_1, LocalDateTime.of(2020, 1, 30, 10, 0), "Завтрак", 500);
     public static final Meal meal_2 = new Meal(ID_2, LocalDateTime.of(2020, 1, 30, 13, 0), "Обед", 1000);
@@ -26,7 +25,7 @@ public class MealTestData {
     public static final Meal meal_4 = new Meal(ID_4, LocalDateTime.of(2020, 1, 31, 0, 0), "Еда на граничное значение", 100);
 
     public static Meal getNew() {
-        return new Meal(null, LocalDateTime.now(), "newFood", 1555);
+        return new Meal(null, LocalDateTime.of(2023, 6, 28, 10, 0), "newFood", 1555);
     }
 
     public static Meal getUpdated() {
@@ -46,6 +45,6 @@ public class MealTestData {
     }
 
     public static void assertMatch(Iterable<Meal> actual, Iterable<Meal> expected) {
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 }
