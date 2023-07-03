@@ -1,7 +1,9 @@
 package ru.javawebinar.topjava.model;
 
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,7 +23,7 @@ import java.time.LocalTime;
                 "ORDER BY m.dateTime DESC")
 })
 @Entity
-@Table(name = "meal", uniqueConstraints = {@UniqueConstraint(columnNames = "date_time", name = "uk_date_time")})
+@Table(name = "meal", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "uk_date_time")})
 public class Meal extends AbstractBaseEntity {
 
     public static final String UPDATE = "Meal.update";
@@ -35,15 +37,17 @@ public class Meal extends AbstractBaseEntity {
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
-    @NotNull
+    @NotBlank
+    @Size(min = 2, max = 120)
     private String description;
 
     @Column(name = "calories", nullable = false)
-    @NotNull
+    @Range(min = 10, max = 5000)
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = true)
+    @NotNull
     private User user;
 
     public Meal() {
