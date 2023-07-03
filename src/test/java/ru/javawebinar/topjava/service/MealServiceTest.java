@@ -33,38 +33,30 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-//@Ignore
 public class MealServiceTest {
     private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
 
-    private static final StringBuilder builder = new StringBuilder();
+    private static final StringBuilder builder = new StringBuilder()
+            .append("\n==================================================\n")
+            .append("Test results: MealServiceTest (duration)\n")
+            .append("--------------------------------------------------\n");
 
     @Rule
     public final Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
-            builder
-                    .append(String.format("%-30s", description.getMethodName()))
-                    .append(TimeUnit.NANOSECONDS.toMillis(nanos))
-                    .append(" ms\n");
-        }
-    };
-
-    @Rule
-    public TestWatcher testWatcher = new TestWatcher() {
-        @Override
-        protected void starting(Description description) {
-            log.info(description.getMethodName());
+            String msg = String.format(
+                    "%-30s %d ms\n", description.getMethodName(),
+                            TimeUnit.NANOSECONDS.toMillis(nanos));
+            log.info(msg);
+            builder.append(msg);
         }
     };
 
     @AfterClass
     public static void afterClass() {
-        System.out.println("==================================================");
-        System.out.println("Test results: MealServiceTest (duration)");
-        System.out.println("--------------------------------------------------");
-        System.out.print(builder);
-        System.out.println("==================================================");
+        builder.append("==================================================");
+        log.info(String.valueOf(builder));
     }
 
     @Autowired
