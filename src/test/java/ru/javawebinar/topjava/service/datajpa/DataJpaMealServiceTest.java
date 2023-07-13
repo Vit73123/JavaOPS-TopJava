@@ -12,7 +12,9 @@ import static ru.javawebinar.topjava.UserTestData.USER_MATCHER;
 import static ru.javawebinar.topjava.UserTestData.user;
 
 @ActiveProfiles(profiles = Profiles.DATAJPA)
-public class DatajpaMealServiceTest extends AbstractMealServiceTest {
+public class DataJpaMealServiceTest extends AbstractMealServiceTest {
+
+
 
     @Test
     public void getWithUser() {
