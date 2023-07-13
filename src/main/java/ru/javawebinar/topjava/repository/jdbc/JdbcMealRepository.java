@@ -23,8 +23,6 @@ public abstract class JdbcMealRepository<DT> implements MealRepository {
 
     private final SimpleJdbcInsert insertMeal;
 
-    protected abstract DT getDateTime(LocalDateTime dateTime);
-
     public JdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.insertMeal = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("meal")
@@ -33,6 +31,8 @@ public abstract class JdbcMealRepository<DT> implements MealRepository {
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
+
+    protected abstract DT getDateTime(LocalDateTime dateTime);
 
     @Override
     public Meal save(Meal meal, int userId) {
