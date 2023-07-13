@@ -54,6 +54,6 @@ public class UserService {
 
     public User getWithMeals(User user) {
         Assert.notNull(user, "user must not be null");
-        return repository.getWithMeals(user.id());
+        return checkNotFoundWithId(repository.getWithMeals(user), user.id());
     }
 }
