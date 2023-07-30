@@ -29,7 +29,7 @@
         <bean id="dataSource"
               class="org.springframework.jdbc.datasource.DriverManagerDataSource"
               p:driverClassName="org.hsqldb.jdbcDriver"
-              p:url="${database.url}"
+              p:url="${database.url};allow_empty_batch=true"
               p:username="${database.username}"
               p:password="${database.password}"/>
     </beans>
