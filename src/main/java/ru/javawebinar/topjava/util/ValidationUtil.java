@@ -6,7 +6,12 @@ import org.springframework.lang.NonNull;
 import ru.javawebinar.topjava.model.AbstractBaseEntity;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import javax.validation.*;
+import java.util.Set;
+
 public class ValidationUtil {
+
+    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     private ValidationUtil() {
     }
@@ -43,6 +48,20 @@ public class ValidationUtil {
             entity.setId(id);
         } else if (entity.id() != id) {
             throw new IllegalArgumentException(entity + " must be with id=" + id);
+        }
+    }
+
+    public static <T> void validate(T entity) {
+        Set<ConstraintViolation<T>> validation = validator.validate(entity);
+        if (validation.size() > 0) {
+            throw new ConstraintViolationException(validation);
+        }
+    }
+
+    public static <T> void validateProperty(Class<T> entity, String property) {
+        Set<ConstraintViolation<Class <T>>> validation = validator.validateProperty(entity, property);
+        if (validation.size() > 0) {
+            throw new ConstraintViolationException(validation);
         }
     }
 
