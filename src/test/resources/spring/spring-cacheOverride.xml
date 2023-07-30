@@ -7,8 +7,10 @@
          http://www.springframework.org/schema/context
          https://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:property-override location="classpath:spring/spring-cacheOverride.properties"/>
+    <beans profile="jpa,datajpa">
+        <context:property-override location="classpath:spring/spring-cacheOverride.properties"/>
 
-    <bean id="cacheManager" class="org.springframework.cache.support.NoOpCacheManager">
-    </bean>
+        <bean id="cacheManager" class="org.springframework.cache.support.NoOpCacheManager">
+        </bean>
+    </beans>
 </beans>
