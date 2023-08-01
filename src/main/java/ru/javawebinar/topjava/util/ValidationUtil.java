@@ -58,13 +58,6 @@ public class ValidationUtil {
         }
     }
 
-    public static <T> void validateProperty(Class<T> entity, String property) {
-        Set<ConstraintViolation<Class <T>>> validation = validator.validateProperty(entity, property);
-        if (validation.size() > 0) {
-            throw new ConstraintViolationException(validation);
-        }
-    }
-
     //  https://stackoverflow.com/a/65442410/548473
     @NonNull
     public static Throwable getRootCause(@NonNull Throwable t) {
