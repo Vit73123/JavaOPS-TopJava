@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.web;
+package ru.javawebinar.topjava.web.meal;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,14 +48,12 @@ public class JspMealController extends AbstractMealController {
     @GetMapping("update")
     public String update(Model model, HttpServletRequest request) {
         model.addAttribute("meal", get(getId(request)));
-        model.addAttribute("action", "update");
         return "mealForm";
     }
 
     @GetMapping("create")
     public String create(Model model) {
         model.addAttribute("meal", new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000));
-        model.addAttribute("action", "create");
         return "mealForm";
     }
 
