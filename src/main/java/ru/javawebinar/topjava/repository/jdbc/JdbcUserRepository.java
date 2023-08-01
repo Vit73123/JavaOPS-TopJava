@@ -29,7 +29,7 @@ public class JdbcUserRepository implements UserRepository {
 
     private final SimpleJdbcInsert insertUser;
 
-    private static final ResultSetExtractor<List<User>> userExtractor = rs -> {
+    private static final ResultSetExtractor<List<User>> USER_EXTRACTOR = rs -> {
         List<User> users = new ArrayList<>();
         Map<Integer, User> usersMap = new HashMap<>();
         while (rs.next()) {
@@ -114,20 +114,20 @@ public class JdbcUserRepository implements UserRepository {
     public User get(int id) {
         return DataAccessUtils.singleResult(jdbcTemplate.query(
                 "SELECT * FROM users u LEFT JOIN user_role r ON u.id = r.user_id WHERE u.id=?",
-                userExtractor, id));
+                USER_EXTRACTOR, id));
     }
 
     @Override
     public User getByEmail(String email) {
         return DataAccessUtils.singleResult(jdbcTemplate.query(
                 "SELECT * FROM users u LEFT JOIN user_role r ON u.id = r.user_id WHERE u.email=?",
-                userExtractor, email));
+                USER_EXTRACTOR, email));
     }
 
     @Override
     public List<User> getAll() {
         return jdbcTemplate.query(
                 "SELECT * FROM users u LEFT JOIN user_role r ON u.id = r.user_id ORDER BY u.name, u.email",
-                userExtractor);
+                USER_EXTRACTOR);
     }
 }
