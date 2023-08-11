@@ -50,4 +50,11 @@ class RootControllerTest extends AbstractControllerTest {
                         }
                 ));
     }
+
+    @Test
+    void getCss() throws Exception {
+        perform(get("/resources/css/style.css"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith("text/css"));
+    }
 }
