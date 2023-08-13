@@ -1,4 +1,3 @@
-
 ## AdminRestController
 
 Get all
@@ -8,6 +7,16 @@ Get all
 Get
 
 `curl -X GET http://localhost:8080/topjava/rest/admin/users/100001`
+
+Get with meals
+
+`curl -X GET http://localhost:8080/topjava/rest/admin/users/with-meals/100001`
+
+## ProfileRestController
+
+Get with meals
+
+`curl -X GET http://localhost:8080/topjava/rest/profile/with-meals`
 
 ## MealRestController
 Get all
