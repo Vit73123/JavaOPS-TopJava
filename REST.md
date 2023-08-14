@@ -1,41 +1,42 @@
-## AdminRestController
+## Working with users
 
-Get all
+Get all users
 
 `curl -X GET http://localhost:8080/topjava/rest/admin/users`  
 
-Get
+Get the user by id
 
 `curl -X GET http://localhost:8080/topjava/rest/admin/users/100001`
 
-Get with meals
+Get the user by id with meals
 
-`curl -X GET http://localhost:8080/topjava/rest/admin/users/with-meals/100001`
+`curl -X GET http://localhost:8080/topjava/rest/admin/users/100001/with-meals`
 
-## ProfileRestController
+## Working with current user
 
-Get with meals
+Get user's meals
 
 `curl -X GET http://localhost:8080/topjava/rest/profile/with-meals`
 
-## MealRestController
-Get all
+## Working with meals
+
+Get all meals
 
 `curl -X GET http://localhost:8080/topjava/rest/meals`  
 
-Get
+Get the meal by id
 
 `curl -X GET http://localhost:8080/topjava/rest/meals/100003`  
 
-Get filtered with null dates and time
+Get meals filtered by date/time with dates and time of null
 
 `curl -X GET http://localhost:8080/topjava/rest/meals/filter`  
 
-Get filtered by dates
+Get filtered by dates with time of null
 
 `curl -X GET http://localhost:8080/topjava/rest/meals/filter?startDate=2020-01-30&endDate=2020-01-30`  
 
-Create
+Create the meal
 
 `
 curl -X POST http://localhost:8080/topjava/rest/meals
@@ -60,7 +61,7 @@ curl -X POST http://localhost:8080/topjava/rest/meals
 `
 
 
-Update
+Update the meal by id
 
 `
 curl -X PUT http://localhost:8080/topjava/rest/meals/100003
@@ -84,6 +85,6 @@ curl -X PUT http://localhost:8080/topjava/rest/meals/100003
 }'
 `
 
-Delete
+Delete the meal by id
 
 `curl -X DELETE http://localhost:8080/topjava/rest/meals/100003`
