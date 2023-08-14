@@ -37,6 +37,6 @@ public class DateTimeFormatAnnotationFormatterFactory implements AnnotationForma
                 return new TimeFormatter();
             }
         }
-        return null;
+        throw new IllegalArgumentException("Date/Time formatter annotation error: " + annotation.type());
     }
 }
