@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava.service;
 
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.User;
@@ -41,7 +40,7 @@ public class UserService {
         return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
-    @Cacheable("users")
+//    @Cacheable("users")
     public List<User> getAll() {
         return repository.getAll();
     }
@@ -55,4 +54,9 @@ public class UserService {
     public User getWithMeals(int id) {
         return checkNotFoundWithId(repository.getWithMeals(id), id);
     }
+
+    public void enable(boolean enabled, int id) {
+        checkNotFoundWithId(repository.get(id), id);
+        repository.enable(enabled, id);
+    };
 }

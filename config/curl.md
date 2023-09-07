@@ -7,6 +7,12 @@
 #### get Users 100001
 `curl -s http://localhost:8080/topjava/rest/admin/users/100001 --user admin@gmail.com:admin`
 
+#### enable User 100002
+`curl -X POST http://localhost:8080/topjava/rest/admin/users/enable --user admin@gmail.com:admin -d "id=100002&enabled=true"`
+
+#### disable User 100002
+`curl -X POST http://localhost:8080/topjava/rest/admin/users/enable --user admin@gmail.com:admin -d "id=100002&enabled=false"`
+
 #### get All Meals
 `curl -s http://localhost:8080/topjava/rest/profile/meals --user user@yandex.ru:password`
 

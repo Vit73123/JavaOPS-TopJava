@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
@@ -53,5 +52,10 @@ public abstract class AbstractUserController {
     public User getWithMeals(int id) {
         log.info("getWithMeals {}", id);
         return service.getWithMeals(id);
+    }
+
+    public void enable(boolean enabled, int id) {
+        log.info("getWithMeals {}", id);
+        service.enable(enabled, id);
     }
 }

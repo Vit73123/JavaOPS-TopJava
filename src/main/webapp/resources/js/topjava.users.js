@@ -44,4 +44,23 @@ $(function () {
             ]
         })
     );
+
+    $("input[type=checkbox]").change(function () {
+        enable(
+            $(this).closest('tr').attr("id"),
+            $(this).is(":checked"));
+    })
 });
+
+function enable(id, checked) {
+    $.ajax({
+        type: "POST",
+        url: ctx.ajaxUrl + "enable",
+        data: {
+            "id": id,
+            "enabled": checked
+        }
+    }).done(function () {
+        $(this).closest('tr').attr("data-user-enabled", checked);
+    });
+}
