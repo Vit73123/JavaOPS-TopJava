@@ -62,10 +62,10 @@ public class AdminRestController extends AbstractUserController {
         return super.getWithMeals(id);
     }
 
-    @PostMapping("/enable")
+    @PatchMapping("/enable")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void enable(@RequestParam String enabled, @RequestParam String id) {
-        System.out.println(id + " " + Integer.parseInt(id) + " " + Boolean.parseBoolean(enabled));
-        super.enable(Boolean.parseBoolean(enabled), Integer.parseInt(id));
+    public void enable(@RequestParam boolean enabled, @RequestParam int id) {
+        log.info("enabled={} with id={}", enabled, id);
+        super.enable(enabled, id);
     }
 }
