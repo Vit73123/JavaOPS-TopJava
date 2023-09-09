@@ -48,11 +48,12 @@ $(function () {
     $("input[type=checkbox]").change(function () {
         enable(
             $(this).closest('tr').attr("id"),
-            $(this).is(":checked"));
+            $(this).is(":checked"),
+            this);
     })
 });
 
-function enable(id, checked) {
+function enable(id, checked, enabled) {
     $.ajax({
         type: "POST",
         url: ctx.ajaxUrl + "enable",
@@ -61,6 +62,8 @@ function enable(id, checked) {
             "enabled": checked
         }
     }).done(function () {
-        $(this).closest('tr').attr("data-user-enabled", checked);
+        enabled.closest('tr').attr("data-user-enabled", checked);
+    }).fail(function () {
+        enabled.checked = !checked
     });
 }
