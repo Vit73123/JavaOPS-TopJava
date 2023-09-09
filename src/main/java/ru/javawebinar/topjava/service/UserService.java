@@ -56,7 +56,6 @@ public class UserService {
     }
 
     public void enable(boolean enabled, int id) {
-        checkNotFoundWithId(repository.get(id), id);
-        repository.enable(enabled, id);
+        checkNotFoundWithId(repository.enable(enabled, id), id);
     };
 }

@@ -23,5 +23,5 @@ public interface UserRepository {
         throw new UnsupportedOperationException();
     }
 
-    void enable(boolean enabled, int id);
+    boolean enable(boolean enabled, int id);
 }

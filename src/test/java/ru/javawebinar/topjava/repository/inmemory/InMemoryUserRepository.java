@@ -39,7 +39,8 @@ public class InMemoryUserRepository extends InMemoryBaseRepository<User> impleme
     }
 
     @Override
-    public void enable(boolean enabled, int id) {
-        map.get(id).setEnabled(enabled);
+    public boolean enable(boolean enabled, int id) {
+//        return map.computeIfPresent(id, (id, oldT) -> entity);
+        return true;
     }
 }

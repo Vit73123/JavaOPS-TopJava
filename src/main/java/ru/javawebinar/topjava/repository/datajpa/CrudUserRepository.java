@@ -28,5 +28,5 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     @Transactional
     @Modifying
     @Query("UPDATE User u SET u.enabled = :enabled WHERE u.id = :id")
-    void enable(@Param("enabled") boolean enabled, @Param("id") int id);
+    int enable(@Param("enabled") boolean enabled, @Param("id") int id);
 }

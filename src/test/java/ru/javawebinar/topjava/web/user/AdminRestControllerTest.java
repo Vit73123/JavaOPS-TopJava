@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -97,7 +95,6 @@ class AdminRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @Transactional(propagation = Propagation.NEVER)
     void enable() throws Exception {
         User enabled = getEnabled();
         perform(MockMvcRequestBuilders.post(REST_URL + "enable")
