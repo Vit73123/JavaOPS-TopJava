@@ -50,6 +50,21 @@ function save() {
     });
 }
 
+function saveJSON() {
+    $.ajax({
+        type: "POST",
+        url: ctx.ajaxUrl,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        // data: getFormJSON(form)
+        data: getFormJSON(form)
+    }).done(function () {
+        $("#editRow").modal("hide");
+        updateTable();
+        successNoty("Saved");
+    });
+}
+
 let failedNote;
 
 function closeNoty() {
@@ -77,4 +92,14 @@ function failNoty(jqXHR) {
         layout: "bottomRight"
     });
     failedNote.show()
+}
+
+function getFormJSON($form) {
+    var json = {};
+
+    $.map($form.serializeArray(), function (n, i) {
+        json[n['name']] = n['value'];
+    });
+
+    return JSON.stringify(json);
 }

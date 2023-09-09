@@ -110,7 +110,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="save()">
+                <button type="button" class="btn btn-primary" onclick="saveJSON()">
                     <span class="fa fa-check"></span>
                     <spring:message code="common.save"/>
                 </button>
