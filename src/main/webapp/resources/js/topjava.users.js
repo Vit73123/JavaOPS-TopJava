@@ -53,7 +53,7 @@ $(function () {
     })
 });
 
-function enable(id, checked, enabled) {
+function enable(id, checked, checkbox) {
     $.ajax({
         type: "POST",
         url: ctx.ajaxUrl + id,
@@ -61,8 +61,8 @@ function enable(id, checked, enabled) {
             "enabled": checked
         }
     }).done(function () {
-        $(enabled).closest('tr').attr("data-user-enabled", checked);
+        $(checkbox).closest('tr').attr("data-user-enable", checked);
     }).fail(function () {
-        enabled.checked = !checked
+        checkbox.checked = !checked
     });
 }
