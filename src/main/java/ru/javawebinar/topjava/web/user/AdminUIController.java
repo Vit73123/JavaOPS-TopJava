@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -25,12 +26,12 @@ public class AdminUIController extends AbstractUserController {
         super.delete(id);
     }
 
-    @PostMapping
+    @Override
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void create(@RequestParam String name,
-                       @RequestParam String email,
-                       @RequestParam String password) {
-        super.create(new User(null, name, email, password, Role.USER));
+    public User create(@RequestBody User user) {
+        user.setRoles(Collections.singleton(Role.USER));
+        return super.create(user);
     }
 
     @PostMapping(value = "/{id}")
