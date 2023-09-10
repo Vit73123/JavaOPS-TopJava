@@ -33,11 +33,11 @@ public class AdminUIController extends AbstractUserController {
         super.create(new User(null, name, email, password, Role.USER));
     }
 
-    @PostMapping(value = "/enable")
+    @PostMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void enable(
             @RequestParam boolean enabled,
-            @RequestParam int id) {
+            @PathVariable int id) {
         log.info("enabled={} with id={}", enabled, id);
         super.enable(enabled, id);
     }

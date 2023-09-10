@@ -56,9 +56,8 @@ $(function () {
 function enable(id, checked, enabled) {
     $.ajax({
         type: "POST",
-        url: ctx.ajaxUrl + "enable",
+        url: ctx.ajaxUrl + id,
         data: {
-            "id": id,
             "enabled": checked
         }
     }).done(function () {
