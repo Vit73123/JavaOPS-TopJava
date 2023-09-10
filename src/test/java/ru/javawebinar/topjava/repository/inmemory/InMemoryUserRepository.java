@@ -37,10 +37,4 @@ public class InMemoryUserRepository extends InMemoryBaseRepository<User> impleme
                 .findFirst()
                 .orElse(null);
     }
-
-    @Override
-    public boolean enable(boolean enabled, int id) {
-//        return map.computeIfPresent(id, (id, oldT) -> entity);
-        return true;
-    }
 }
