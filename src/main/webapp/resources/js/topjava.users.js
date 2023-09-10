@@ -61,7 +61,7 @@ function enable(id, checked, enabled) {
             "enabled": checked
         }
     }).done(function () {
-        enabled.closest('tr').attr("data-user-enabled", checked);
+        $(enabled).closest('tr').attr("data-user-enabled", checked);
     }).fail(function () {
         enabled.checked = !checked
     });
