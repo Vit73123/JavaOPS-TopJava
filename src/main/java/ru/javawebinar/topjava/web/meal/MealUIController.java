@@ -34,7 +34,7 @@ public class MealUIController extends AbstractMealController {
         return super.create(meal);
     }
 
-    @PostMapping("/filter")
+    @GetMapping("/filter")
     public List<MealTo> getBetween (
             @Nullable @RequestParam LocalDate startDate,
             @Nullable @RequestParam LocalTime startTime,

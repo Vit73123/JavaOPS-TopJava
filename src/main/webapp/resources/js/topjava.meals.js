@@ -40,7 +40,7 @@ $(function () {
 
 function setFilter() {
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: ctx.ajaxUrl + "filter",
         data: $('#filterForm').serialize(),
     }).done(function (data) {
