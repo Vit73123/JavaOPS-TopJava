@@ -37,9 +37,11 @@ public class DateTimeFormatters {
 
     public static class LocalDateTimeFormatter implements Formatter<LocalDateTime> {
 
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         @Override
         public LocalDateTime parse(String text, Locale locale) {
-            return LocalDateTime.parse(text);
+            return LocalDateTime.parse(text, dateTimeFormatter);
         }
 
         @Override
