@@ -13,14 +13,14 @@ function makeEditable(datatableApi) {
 }
 
 function add() {
-    // $("#modalTitle").html(i18n["addTitle"]);
+    $("#modalTitle").html(i18n["addTitle"]);
     form.find(":input").val("");
     $("#editRow").modal();
 }
 
 function updateRow(id) {
     form.find(":input").val("");
-    // $("#modalTitle").html(i18n["editTitle"]);
+    $("#modalTitle").html(i18n["editTitle"]);
     $.get(ctx.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
             form.find("input[name='" + key + "']").val(value);
@@ -30,8 +30,7 @@ function updateRow(id) {
 }
 
 function deleteRow(id) {
-    if (confirm('Are you sure?')) {
-    // if (confirm(i18n['common.confirm'])) {
+    if (confirm(i18n['common.confirm'])) {
         $.ajax({
             url: ctx.ajaxUrl + id,
             type: "DELETE"
@@ -85,7 +84,6 @@ function renderEditBtn(data, type, row) {
 
 function renderDeleteBtn(data, type, row) {
     if (type === "display") {
-        debugger;
         return "<a onclick='deleteRow(" + row.id + ");'><span class='fa fa-remove'></span></a>";
     }
 }
