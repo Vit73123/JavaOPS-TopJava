@@ -21,9 +21,11 @@ $.ajaxSetup({
     converters: {
         "text json": function (data) {
             data = JSON.parse(data);
-            $(data).each(function () {
-                this.dateTime = this.dateTime.substr(0, 16).replace('T', ' ');
-            });
+            if(typeof data === 'object') {
+                $(data).each(function () {
+                    this.dateTime = this.dateTime.substr(0, 16).replace('T', ' ');
+                });
+            }
             return data;
         }
     }
