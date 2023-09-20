@@ -64,7 +64,6 @@
                 <th><spring:message code="meal.calories"/></th>
                 <th></th>
                 <th></th>
-                <th></th>
             </tr>
             </thead>
         </table>

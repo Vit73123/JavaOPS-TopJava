@@ -21,7 +21,7 @@ $.ajaxSetup({
     converters: {
         "text json": function (data) {
             data = JSON.parse(data);
-            if(typeof data === 'object') {
+            if (typeof data === 'object') {
                 $(data).each(function () {
                     this.dateTime = this.dateTime.substr(0, 16).replace('T', ' ');
                 });
@@ -51,10 +51,6 @@ $(function () {
                     "data": "calories"
                 },
                 {
-                    "data": "excess",
-                    "visible": false
-                },
-                {
                     "orderable": false,
                     "defaultContent": "",
                     "render": renderEditBtn
@@ -72,11 +68,7 @@ $(function () {
                 ]
             ],
             "createdRow": function (row, data, dataIndex) {
-                if (!data.excess) {
-                    $(row).attr("data-meal-excess", false);
-                } else {
-                    $(row).attr("data-meal-excess", true);
-                }
+                $(row).attr("data-meal-excess", data.excess);
             }
         })
     );
