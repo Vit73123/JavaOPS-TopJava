@@ -34,6 +34,16 @@ class RootControllerTest extends AbstractControllerTest {
 
     @Test
     void getMeals() throws Exception {
+        perform(get("/meals")
+                .with(userAuth(user)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("meals"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/meals.jsp"));
+    }
+
+    @Test
+    void getMealsUnAuth() throws Exception {
         perform(get("/meals"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
