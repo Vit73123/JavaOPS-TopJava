@@ -78,8 +78,10 @@
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
-<script type="text/javascript">
-    i18n["addTitle"] = '<spring:message code="user.add"/>';
-    i18n["editTitle"] = '<spring:message code="user.edit"/>';
-</script>
+
+<jsp:include page="init/initLocale.jsp">
+    <jsp:param name="addTitle" value="user.add"/>
+    <jsp:param name="editTitle" value="user.edit"/>
+</jsp:include>
+
 </html>
