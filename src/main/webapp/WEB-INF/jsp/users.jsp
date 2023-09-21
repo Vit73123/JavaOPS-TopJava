@@ -79,7 +79,7 @@
 <jsp:include page="fragments/footer.jsp"/>
 </body>
 
-<jsp:include page="init/initLocale.jsp">
+<jsp:include page="fragments/initLocale.jsp">
     <jsp:param name="addTitle" value="user.add"/>
     <jsp:param name="editTitle" value="user.edit"/>
 </jsp:include>
