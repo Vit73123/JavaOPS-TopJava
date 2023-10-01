@@ -78,10 +78,12 @@ public class ValidationUtil {
     }
 
     public static ResponseEntity<String> getErrorResponse(BindingResult result) {
-        return ResponseEntity.unprocessableEntity().body(
-                result.getFieldErrors().stream()
+        return ResponseEntity.unprocessableEntity().body(getBindingErrors(result));
+    }
+
+    public static String getBindingErrors(BindingResult result) {
+        return result.getFieldErrors().stream()
                         .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-                        .collect(Collectors.joining("<br>"))
-        );
+                        .collect(Collectors.joining("<br>"));
     }
 }
