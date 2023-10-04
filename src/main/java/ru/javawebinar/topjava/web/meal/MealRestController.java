@@ -1,13 +1,16 @@
 package ru.javawebinar.topjava.web.meal;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.web.validation.MealValidator;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -19,6 +22,14 @@ import java.util.List;
 @RequestMapping(value = MealRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealRestController extends AbstractMealController {
     static final String REST_URL = "/rest/profile/meals";
+
+    @Autowired
+    MealValidator mealValidator;
+
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.addValidators(mealValidator);
+    }
 
     @Override
     @GetMapping("/{id}")

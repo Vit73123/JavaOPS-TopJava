@@ -7,7 +7,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
-import ru.javawebinar.topjava.web.UserValidator;
+import ru.javawebinar.topjava.web.validation.UserValidator;
 
 import javax.validation.Valid;
 import java.util.List;
