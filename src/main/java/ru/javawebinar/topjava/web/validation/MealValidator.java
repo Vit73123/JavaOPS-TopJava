@@ -52,9 +52,6 @@ public class MealValidator implements Validator {
     }
 
     private boolean isNew() {
-        String requestURI = request.getRequestURI();
-        return ((requestURI.endsWith("/profile/meals/") ||
-                requestURI.endsWith("/rest/profile/meals"))
-                && request.getMethod().equals("POST"));
+        return !request.getMethod().equals("PUT");
     }
 }
