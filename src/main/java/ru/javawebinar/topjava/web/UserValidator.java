@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -18,6 +19,9 @@ public class UserValidator implements Validator {
 
     @Autowired
     UserService service;
+
+    @Autowired
+    MessageSource messageSource;
 
     private HttpServletRequest request;
 
@@ -39,7 +43,10 @@ public class UserValidator implements Validator {
         try {
             User user = service.getByEmail(email);
             if (isNew() || user.id() != SecurityUtil.authUserId()) {
-                errors.rejectValue("email", "user.email.error.exists", "User with this email already exists");
+                String emailErrorCode = "user.email.error.exists";
+                errors.rejectValue("email",
+                        emailErrorCode,
+                        messageSource.getMessage(emailErrorCode, new Object[]{}, request.getLocale()));
             }
         } catch (Exception ignored) {
         }
