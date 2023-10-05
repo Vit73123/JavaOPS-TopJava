@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.web.validation;
+package ru.javawebinar.topjava.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -8,10 +8,8 @@ import org.springframework.validation.Validator;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.javawebinar.topjava.model.User;
-import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.to.UserTo;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -20,7 +18,7 @@ import java.util.Objects;
 public class UserValidator implements Validator {
 
     @Autowired
-    UserRepository repository;
+    UserService service;
 
     @Autowired
     MessageSource messageSource;
@@ -43,7 +41,7 @@ public class UserValidator implements Validator {
                 ((UserTo) target).getEmail();
 
         try {
-            User user = repository.getByEmail(email);
+            User user = service.getByEmail(email);
             if (isNew() || user.id() != SecurityUtil.authUserId()) {
                 String emailErrorCode = "user.email.error.exists";
                 errors.rejectValue("email",
@@ -55,10 +53,7 @@ public class UserValidator implements Validator {
     }
 
     private boolean isNew() {
-        String requestURI = request.getRequestURI();
-        return ((requestURI.endsWith("/profile/register") ||
-                requestURI.endsWith("/rest/profile") ||
-                requestURI.endsWith("/admin/users/")) &&
-                request.getMethod().equals("POST"));
+        return (request.getRequestURI().endsWith("/profile/register") ||
+                (request.getRequestURI().endsWith("rest/profile") && request.getMethod().equals("POST")));
     }
 }

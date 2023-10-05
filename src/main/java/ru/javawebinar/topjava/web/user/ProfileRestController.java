@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.UserTo;
-import ru.javawebinar.topjava.web.validation.UserValidator;
+import ru.javawebinar.topjava.web.UserValidator;
 
 import javax.validation.Valid;
 import java.net.URI;
