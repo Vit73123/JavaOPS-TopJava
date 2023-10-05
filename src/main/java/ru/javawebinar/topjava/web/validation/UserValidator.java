@@ -55,7 +55,10 @@ public class UserValidator implements Validator {
     }
 
     private boolean isNew() {
-//        Если метод PUT, то независимо от ендпоинта, это update
-        return !request.getMethod().equals("PUT");
+        String requestURI = request.getRequestURI();
+        return ((requestURI.endsWith("/profile/register") ||
+                requestURI.endsWith("/rest/profile") ||
+                requestURI.endsWith("/admin/users/")) &&
+                request.getMethod().equals("POST"));
     }
 }
